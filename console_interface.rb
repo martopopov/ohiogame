@@ -3,7 +3,7 @@ require './bot_player.rb'
 class TableHand
   def play
     if @count_cards < 4
-      new_card_hand(players[0].input_card(@suit, self)).play
+      new_card_hand(players[0].play_card(@suit, self)).play
     else self
     end
   end
@@ -17,7 +17,7 @@ class PersonPlayer < Player
     prediction.to_i
   end
 
-  def input_card(suit = :first_turn, cards_on_table)
+  def play_card(suit = :first_turn, cards_on_table)
     puts "#{name}, it's your turn\n"
     puts "your hand is: #{hand}\n"
     unless cards_on_table.first_turn?
@@ -28,7 +28,7 @@ class PersonPlayer < Player
     card = Card.by_string string
     if not hand.permitted? card, suit
       puts "not permitted card\n"
-      input_card suit, cards_on_table
+      play_card suit, cards_on_table
     else
       hand.take_card card
       CardOnTable.new card.suit, card.value, self

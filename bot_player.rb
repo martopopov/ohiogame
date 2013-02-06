@@ -33,7 +33,8 @@ module PlayHands
   end
 
   def leading?(card, suit, taken_cards, trump)
-    ((card.suit == suit or suit == :first_turn) and card == leading_card_of_suit(taken_cards, card.suit)) or card.suit == trump
+    ((card.suit == suit or suit == :first_turn) and
+      card == leading_card_of_suit(taken_cards, card.suit)) or card.suit == trump
   end
 
   def all_leading_cards(taken_cards, suit, trump)
@@ -59,23 +60,33 @@ class BotHand < Hand
   include PlayHands
 
   def cards_of_suit(suit)
-    select { |card| card.suit == suit }
+    cards_of_type suit, :suit
   end
 
   def cards_of_value(value)
-    select { |card| card.value == value }
+    cards_of_type value, :value
   end
 
   def best_card_of_suit(suit)
-    cards_of_suit(suit).max { |card_1, card_2| card_1 <=> card_2 }
+    extremal cards_of_suit(suit), :max
   end
 
   def worst_card_of_suit(suit)
-    cards_of_suit(suit).min { |card_1, card_2| card_1 <=> card_2 }
+    extremal cards_of_suit(suit), :min
   end
 
   def worst_permitted_card(suit)
-    permitted_cards(suit).min { |card_1, card_2| card_1 <=> card_2 }
+    extremal permitted_cards(suit), :min
+  end
+
+  private
+
+  def extremal(set_of_cards, type)
+    set_of_cards.send(type) { |card_1, card_2| card_1 <=> card_2 }
+  end
+
+  def cards_of_type(pattern, type)
+    select { |card| card.send(type) == pattern }
   end
 end
 
@@ -93,7 +104,7 @@ class BotPlayer < Player
   #   select { |card| permitted? card, suit }
   # end
 
-  def input_card(suit = :first_turn, cards_on_table)
+  def play_card(suit = :first_turn, cards_on_table)
     taken_cards = hand.taken_cards cards_on_table.players
     choice = hand.play(taken_cards, cards_on_table.suit, cards_on_table.trump)
     hand.take_card choice

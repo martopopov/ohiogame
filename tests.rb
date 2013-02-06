@@ -151,7 +151,8 @@ class TestRound < MiniTest::Unit::TestCase
 end
 
 class TestBotHand < MiniTest::Unit::TestCase
-  HAND = BotHand.new [Card.new('Club','Q'), Card.new('Club', '7'), Card.new('Spade', '7'), Card.new('Spade', '10'), Card.new('Spade', 'A')]
+  HAND = BotHand.new [Card.new('Club','Q'), Card.new('Club', '7'),
+   Card.new('Spade', '7'), Card.new('Spade', '10'), Card.new('Spade', 'A')]
 
   def test_cards_of_suit
     assert_equal HAND.cards_of_suit('Club'), [Card.new('Club','Q'), Card.new('Club', '7')]
@@ -199,7 +200,8 @@ class TestPlayHands < MiniTest::Unit::TestCase
   end
 
   def sample_taken_cards
-    [Card.new('Club', 'J'), Card.new('Club','A'), Card.new('Diamond','K'), Card.new('Spade','2'), Card.new('Diamond', 'A')]
+    [Card.new('Club', 'J'), Card.new('Club','A'), Card.new('Diamond','K'),
+     Card.new('Spade','2'), Card.new('Diamond', 'A')]
   end
 
   def test_taken_cards
@@ -232,7 +234,8 @@ class TestPlayHands < MiniTest::Unit::TestCase
   end
 
   def test_all_leading_cards
-    assert_equal sample.all_leading_cards(sample_taken_cards, :first_turn, 'Heart'), [Card.new('Spade','A'), Card.new('Heart','5')]
+    leading_cards = sample.all_leading_cards(sample_taken_cards, :first_turn, 'Heart')
+    assert_equal leading_cards, [Card.new('Spade','A'), Card.new('Heart','5')]
   end
 
   def test_permitted_cards
