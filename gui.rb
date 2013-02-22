@@ -27,7 +27,7 @@ class PersonPlayer < Player
   end
 
   def show_other_players_card(count_cards, frame)
-    back_image = TkPhotoImage.new(:file => 'back.gif')
+    back_image = TkPhotoImage.new(:file => 'cards/back.gif')
     1.upto(count_cards).each do |n|
       Tk::Tile::Button.new(frame) { image back_image }.
       grid(:column => 0, :row => n + 2, :sticky => 'w')
@@ -84,7 +84,7 @@ end
 
 class Card
   def get_image_name
-    "AHeart.gif"
+    "cards/#{value}#{suit}.gif"
   end
 end
 
@@ -158,6 +158,6 @@ end
 
 players = [PersonPlayer.new('A'), PersonPlayer.new('B'), PersonPlayer.new('C'), PersonPlayer.new('D')]
 
-dyado = (Game.new players).play
+ohio = (Game.new players).play
 
 Tk.mainloop
