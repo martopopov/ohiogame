@@ -4,14 +4,20 @@ require './ohio'
 require './bot_player'
 
 $root = TkRoot.new { title "ohio" }
-$content = Tk::Tile::Frame.new($root) { padding "3 3 12 12" }.grid(:sticky => 'nsew')
 
-TkGrid.columnconfigure $root, 0, :weight => 1; TkGrid.rowconfigure $root, 0, :weight => 1
+TkGrid.columnconfigure $root, 0, :weight => 1
+TkGrid.rowconfigure $root, 0, :weight => 1
 
 class PersonPlayer < Player
   def guess_hands(round, number)
     myself = self
     guess_window = TkToplevel.new { title "baba" }
+
+    hand.each do |card|
+      card_image = TkPhotoImage.new(:file => card.get_image_name)
+      Tk::Tile::Button.new(guess_window) { image card_image }.grid
+    end
+
     label = Tk::Tile::Button.new(guess_window) { text "#{myself.name}, guess how many hands will you make" }.grid
     test = TkVariable.new
     guess_entry = Tk::Tile::Entry.new(guess_window) { textvariable test }.grid
@@ -94,7 +100,7 @@ class Round
   def visualize_deal
     @hand_predictions = {}
     deal
-    players[0].guess_hands self, number
+    players[0].guess_hands self, 0
     current_table_hand = TableHand.new(players, @trump)
     play_hand current_table_hand, number
   end
@@ -113,7 +119,7 @@ class Round
       end
 
     else
-      (Round.new @number + 1, players).visualize_deal if @number < 16
+      (Round.new @number + 1, players.rotate).visualize_deal if @number < 16
     end
   end
 
