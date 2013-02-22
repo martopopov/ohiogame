@@ -1,5 +1,7 @@
 class PersonPlayer < Player
    def guess_hands(round)
+    system ("cls")
+    puts "the trump is #{round.trump}\n"
     puts "#{name}, guess how many hands will you make\n"
     puts "your hand is #{hand}"
     prediction = gets("\n")
@@ -8,6 +10,7 @@ class PersonPlayer < Player
 
   def play_card(suit = :first_turn, cards_on_table)
     system ("cls")
+    puts "the trump is #{cards_on_table.trump}"
     puts "#{name}, it's your turn\n"
     puts "your hand is: #{hand}\n"
 

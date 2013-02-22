@@ -20,5 +20,9 @@ class Game
       current_round.play
       update_score_table current_round.round_score
     end
+    puts "The Final Score is:\n"
+    score_table.each do |player, score|
+      puts "#{player}: #{score}"
+    end
   end
 end
